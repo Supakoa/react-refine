@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Refine } from "@pankod/refine-core";
+import {
+  Layout,
+  ReadyPage,
+  notificationProvider,
+  ErrorComponent,
+} from "@pankod/refine-antd";
+import routerProvider from "@pankod/refine-react-router-v6";
+import dataProvider from "@pankod/refine-simple-rest";
+import { PostList } from "./pages/posts";
+import { UsersList } from "./pages/users";
 
-function App() {
+import "@pankod/refine-antd/dist/styles.min.css";
+import Header from "./components/Header";
+
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Refine
+      Header={Header}
+      routerProvider={routerProvider}
+      dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
+      Layout={Layout}
+      ReadyPage={ReadyPage}
+      notificationProvider={notificationProvider}
+      catchAll={<ErrorComponent />}
+      resources={[
+        { name: "posts", list: PostList },
+        { name: "users", list: UsersList },
+      ]}
+    />
   );
-}
-
+};
 export default App;
